@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>pdbs</Title>
+			<Shortcut>pdbs</Shortcut>
+			<Description>
+				Code snippet for an automatically implemented DbSet from EF Core
+				Language Version: C# 3.0 or higher
+			</Description>
+			<Author>dante380</Author>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+			</SnippetTypes>
+		</Header>
+		<Snippet>
+			<Declarations>
+				<Literal>
+					<ID>type</ID>
+					<ToolTip>DbSet Class</ToolTip>
+					<Default>DbSet</Default>
+				</Literal>
+				<Literal>
+					<ID>generic</ID>
+					<ToolTip>DbSet Generic</ToolTip>
+					<Default>YourModel</Default>
+				</Literal>
+				<Literal>
+					<ID>property</ID>
+					<ToolTip>Entity name</ToolTip>
+					<Default>Entity</Default>
+				</Literal>
+			</Declarations>
+			<Code Language="csharp">
+				<![CDATA[public $type$<$generic$> $property$ { get; set; }$end$]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

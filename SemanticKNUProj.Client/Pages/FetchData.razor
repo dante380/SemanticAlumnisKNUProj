@@ -1,0 +1,126 @@
+﻿@page "/fetchdata"
+@inject HttpClient Http
+
+<PageTitle>Alumnis Table</PageTitle>
+
+<h1>Alumnis Table</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Link</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (alumnis == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                @foreach (var Alu in alumnis)
+                {
+                    <tr>
+                        <td>@Alu.Id</td>
+                        <td>@Alu.Name</td>
+                        <td>@Alu.Link</td>
+                        <td>
+                        <button type="button" class="btn btn-warning" @onclick="() => OpenEditDialog(Alu)">Edit</button>
+
+
+
+                            <button type="button" class="btn btn-danger" @onclick="() => OpenDeleteDialog(Alu)">Delete</button>
+                        </td>
+                    </tr>
+                
+                }
+            }
+        </tbody>
+    </table>
+
+@if (DeleteDialogOpen)
+{
+    <ModalDialog Title="Are you sure?"
+                 Text="Do you want to delete this entry?"
+                 OnClose="@OnDeleteDialogClose"
+                 DialogType="ModalDialog.ModalDialogType.DeleteCancel">
+    </ModalDialog>
+}
+
+@if (EditDialogOpen)
+{
+    <HotEdit Title="Alumni Edit"
+             OnClose="@OnEditDialogClose"
+             OnSubmitCallback="@Refresh">
+
+
+    </HotEdit>
+}
+
+@code {
+
+    private Alumni[]? alumnis;
+
+    private Alumni? _alumniToDelete;
+    public bool DeleteDialogOpen { get; set; }
+
+    private Alumni? _alumniToEdit;
+    public bool EditDialogOpen { get; set; }
+
+    public record Alumni(Guid Id, string Name, string Link);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task OnDeleteDialogClose(bool accepted)
+    {
+        if (accepted)
+        {
+            await Http.DeleteAsync($"https://localhost:7284/api/Alumnis/Delete/{_alumniToDelete.Id}");
+            await LoadData();
+            _alumniToDelete = null;
+        }
+
+        DeleteDialogOpen = false;
+        StateHasChanged();
+    }
+
+    private void OpenDeleteDialog(Alumni alumnis)
+    {
+        DeleteDialogOpen = true;
+        _alumniToDelete = alumnis;
+        StateHasChanged();
+    }
+
+    private async Task OnEditDialogClose(bool accepted)
+    {
+        EditDialogOpen = false;
+        StateHasChanged();
+    }
+
+    private void OpenEditDialog(Alumni alumnis)
+    {
+        EditDialogOpen = true;
+        _alumniToEdit = alumnis;
+        StateHasChanged();
+    }
+
+    private async Task LoadData()
+    {
+        alumnis = await Http.GetFromJsonAsync<Alumni[]>("https://localhost:7284/api/Alumnis");
+        StateHasChanged();
+    }
+
+    public async void Refresh()
+    {
+        await LoadData();
+    }
+}

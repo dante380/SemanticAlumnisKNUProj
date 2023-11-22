@@ -1,0 +1,27 @@
+﻿<EditForm Model="model">
+    <DataAnnotationsValidator /> <!-- Required for validation -->
+    <div class="mb-3">
+        <label for="Name" class="form-label">Name</label>
+        <InputText @bind-Value=model.Name class="form-control" /> <!-- Input validation component -->
+        <ValidationMessage For="() => model.Name" /> <!-- Display validation messages for this property -->
+    </div>
+    <div class="mb-3">
+        <label for="Link" class="form-label">Email Address</label>
+        <InputText @bind-Value=model.Link class="form-control" />
+        <ValidationMessage For="() => model.Link" />
+    </div>
+    <div class="mb-3">
+        <button class="btn btn-primary">Submit</button> <!-- Validation initially fires when form submitted -->
+    </div>
+</EditForm>
+
+@code {
+    Alumni model = new();
+
+    public class Alumni
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Link { get; set; }
+    }
+}
