@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SemanticKNUProj", "SemanticKNUProj\SemanticKNUProj.csproj", "{08707747-A16A-4EC6-8676-3B7D41035E1D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SemanticKNUProj.Client", "SemanticKNUProj.Client\SemanticKNUProj.Client.csproj", "{FBA80AA2-1818-4373-89FC-A0E83B07F15C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{08707747-A16A-4EC6-8676-3B7D41035E1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08707747-A16A-4EC6-8676-3B7D41035E1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08707747-A16A-4EC6-8676-3B7D41035E1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08707747-A16A-4EC6-8676-3B7D41035E1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBA80AA2-1818-4373-89FC-A0E83B07F15C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBA80AA2-1818-4373-89FC-A0E83B07F15C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBA80AA2-1818-4373-89FC-A0E83B07F15C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBA80AA2-1818-4373-89FC-A0E83B07F15C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3FDBB467-3F59-4571-A955-28C434B8C885}
+	EndGlobalSection
+EndGlobal
