@@ -1,5 +1,6 @@
 ﻿@page "/fetchdata"
 @inject HttpClient Http
+@*@using SemanticKNUProj.Client.Shared.HotEdit;*@
 
 <PageTitle>Alumnis Table</PageTitle>
 
@@ -35,7 +36,7 @@
 
 
 
-                            <button type="button" class="btn btn-danger" @onclick="() => OpenDeleteDialog(Alu)">Delete</button>
+                        <button type="button" class="btn btn-danger" @onclick="() => OpenDeleteDialog(Alu)">Delete</button>
                         </td>
                     </tr>
                 
@@ -55,25 +56,27 @@
 
 @if (EditDialogOpen)
 {
-    <HotEdit Title="Alumni Edit"
-             OnClose="@OnEditDialogClose"
-             OnSubmitCallback="@Refresh">
-
+    <HotEdit Title="Alumni Edit" OnClose="@OnEditDialogClose" Alum="@_alumniToEdit">
 
     </HotEdit>
 }
 
 @code {
+    HotEdit hd = new();
 
-    private Alumni[]? alumnis;
+    Alumni alum = new Alumni();
 
-    private Alumni? _alumniToDelete;
+    private Alumni[] alumnis;
+
+    private Alumni _alumniToDelete;
     public bool DeleteDialogOpen { get; set; }
 
-    private Alumni? _alumniToEdit;
+    private Alumni _alumniToEdit;
     public bool EditDialogOpen { get; set; }
 
-    public record Alumni(Guid Id, string Name, string Link);
+    //public record Alumni(Guid Id, string Name, string Link);
+
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -102,6 +105,13 @@
 
     private async Task OnEditDialogClose(bool accepted)
     {
+        if (accepted)
+        {
+            await Http.PutAsJsonAsync($"https://localhost:7284/api/Alumnis/{_alumniToEdit.Id}", _alumniToEdit);
+            await LoadData();
+            _alumniToEdit = null;
+        }
+
         EditDialogOpen = false;
         StateHasChanged();
     }
@@ -123,4 +133,11 @@
     {
         await LoadData();
     }
+
+    //public class Alumni
+    //{
+    //    public Guid Id { get; set; }
+    //    public string Name { get; set; }
+    //    public string Link { get; set; }
+    //}
 }

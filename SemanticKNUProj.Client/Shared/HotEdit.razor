@@ -1,5 +1,6 @@
 ﻿@inject HttpClient Http;
 
+
 <div class="modal fade show" id="myModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -8,15 +9,15 @@
                 <button type="button" class="close" @onclick="@ModalCancel">&times;</button>
             </div>
             <div class="modal-body">
-                <EditForm Model="@alu" OnValidSubmit="@HandleValidSubmit">
+                <EditForm Model="@Alum">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
                     <div class="form-group">
                         <label for="subjectInput">Name</label>
-                        <InputText class="form-control" id="subjectInput" @bind-Value="alu.Name" />
+                        <InputText class="form-control" id="subjectInput" @bind-Value="Alum.Name" />
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" @onclick="@ModalOk">Submit</button>
                     </div>
                 </EditForm>
             </div>
@@ -26,35 +27,51 @@
 </div>
 
 @code {
+
+
     [Parameter]
     public string? Title { get; set; }
 
     [Parameter]
-    public EventCallback<bool> OnClose { get; set; }
+    public Alumni? Alum { get; set; }
 
     [Parameter]
-    public EventCallback OnSubmitCallback { get; set; }
+    public EventCallback<bool> OnClose { get; set; }
 
-    private AlumniModel[]? alumnis;
 
-    private AlumniModel? _alumniToEdit;
+    private Alumni[] alumnis;
+
+    private Alumni _alumniToEdit;
     public bool EditDialogOpen { get; set; }
 
-    AlumniModel alu = new();
+    Alumni alu = new();
 
     private Task ModalCancel()
     {
         return OnClose.InvokeAsync(false);
     }
+
+    private async Task ModalOk()
+    {
+        //await OnClose.InvokeAsync(true);
+        //await Http.PutAsJsonAsync($"https://localhost:7284/api/Alumnis/{_alumniToEdit.Id}", new
+        //{
+        //    //_alumniToEdit
+        //    _alumniToEdit.Id,
+        //    _alumniToEdit.Name,
+        //    _alumniToEdit.Link
+        //});
+        await OnClose.InvokeAsync(true);
+    }
+
     public async Task HandleValidSubmit()
     {
-        await Http.PutAsJsonAsync<AlumniModel[]>($"https://localhost:7284/api/Alumnis/Delete/{_alumniToEdit.Id}", alumnis);
-        await OnSubmitCallback.InvokeAsync();
+        
     }
-    public class AlumniModel
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Link { get; set; }
-    }
+    //public class Alumni
+    //{
+    //    public Guid Id { get; set; }
+    //    public string Name { get; set; }
+    //    public string Link { get; set; }
+    //}
 }
