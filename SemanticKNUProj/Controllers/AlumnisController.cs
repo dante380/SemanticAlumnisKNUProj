@@ -98,6 +98,44 @@ namespace SemanticKNUProj.Controllers
             return CreatedAtAction("GetAlumniModel", new { id = alumniModel.Id }, alumniModel);
         }
 
+        [HttpPost("sparql")]
+        //public async Task<IActionResult> PostRdfAlumni(AlumniModel alumniModel)
+        public async Task<ActionResult<AlumniModel>> PostRdfAlumni(AlumniModel alumniModel)
+        {
+            if (_context.alumniModels == null)
+            {
+                return Problem("Entity set 'AppDBCont.alumniModels'  is null.");
+            }
+            SparqlRemoteEndpoint endpoint = new SparqlRemoteEndpoint(new Uri("http://dbpedia.org/sparql"));
+
+            //Make a SELECT query against the Endpoint
+            SparqlResultSet results = endpoint.QueryWithResultSet(@" 
+            SELECT ?alumni
+            WHERE {
+                ?alumni rdf:type dbo:Person .
+                ?alumni dbo:almaMater dbr:Taras_Shevchenko_National_University_of_Kyiv .
+            }");
+            foreach (SparqlResult result in results)
+            {
+
+                string[] prnt = result.ToString().Split('/')
+                    .Last().Split('_');
+                if (prnt.Length > 2)
+                    prnt[1] = prnt[2];
+    
+                alumniModel.Id = Guid.NewGuid();
+                alumniModel.Name = prnt[0];
+                alumniModel.Link = prnt[1];
+            //_context.alumniModels.Add(alumniModel);
+            }
+            //await _context.SaveChangesAsync();
+
+            return NoContent();
+
+            //return CreatedAtAction("GetAlumniModel", new { id = alumniModel.Id }, alumniModel);
+        }
+
+
         // DELETE: api/Alumnis/5
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteAlumniModel(Guid id)
@@ -122,5 +160,8 @@ namespace SemanticKNUProj.Controllers
         {
             return (_context.alumniModels?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+
+
     }
 }
